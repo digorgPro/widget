@@ -1,13 +1,15 @@
 (function($){
+	//产品列表轮播
 	$.fn.shaoSlider = function(options){
 		var settings = $.extend({
 			displaySlideNum: 4, //显示li个数
 			moveSlideNum: 1, //移动li个数
 			auto: true, //自动滑动
-			autoTime: 1500,
+			autoTime: 1500, //轮播速度
 			controlsBtn: true, //显示左右按钮
 			controlsPoint: false, //显示点
-			marginRight: 20 //li间距
+			marginRight: 20, //li间距
+			response: true //是否自适应
 		}, options);
 		
 		var _this = this,
@@ -18,20 +20,34 @@
 			sliderWidth,
 			liWidth,
 			interval;
-	    window.onresize = adjuest;
-	    adjuest();
-	    function adjuest(){
+		if(settings.response){
+		    window.onresize = adjuest;
+		    adjuest();
+		    function adjuest(){
+				sliderWidth = $(_this).width();
+				displaySlideNum = settings.displaySlideNum;
+				if(sliderWidth < 1200){
+					displaySlideNum = 3;
+				}
+				if(sliderWidth < 600){
+					displaySlideNum = 2;
+					settings.controlsBtn = false;
+					settings.controlsPoint = true;
+				}
+				if(sliderWidth < 400){
+					displaySlideNum = 1;
+					settings.controlsBtn = false;
+					settings.controlsPoint = true;
+				}
+		    	init();
+		    }
+		} else{
 			sliderWidth = $(_this).width();
 			displaySlideNum = settings.displaySlideNum;
-			if(sliderWidth < 1200){
-				displaySlideNum = 3;
-			}
-			if(sliderWidth < 600){
-				displaySlideNum = 2;
-			}
-			if(sliderWidth < 400){
-				displaySlideNum = 1;
-			}
+			init();
+		}
+	    
+	    function init(){
 			liWidth = parseInt((sliderWidth - (displaySlideNum - 1)*settings.marginRight)/displaySlideNum);
 	    	ul.css({
 	    		width: (liWidth + settings.marginRight)* ALen + 'px'
@@ -40,10 +56,6 @@
 	    		width: liWidth + 'px',
 	    		marginRight: settings.marginRight + 'px'
 	    	});
-	    	init();
-	    }
-	    
-	    function init(){
 	    	var index = 0,
 			$arrL = $('<span class="arr arr-l"></span>'),
 			$arrR = $('<span class="arr arr-r"></span>'),
@@ -66,7 +78,11 @@
 				}
 				$(_this).append($pointBox);
 			}
+			if(settings.auto){
 				interval = setInterval(auto, settings.autoTime);
+			} else{
+				auto();
+			}
 			
 		    $(_this).on('click', '.arr-r', function(event){
 		    	next();
@@ -81,7 +97,11 @@
 		    	$(this).addClass('active');
 		    	index = $(this).data('index') * displaySlideNum;
 		    	clearInterval(interval);
-				interval = setInterval(auto, settings.autoTime);
+				if(settings.auto){
+					interval = setInterval(auto, settings.autoTime);
+				} else{
+					auto();
+				}
 		    	move();
 		    	return false;
 		    });
@@ -93,7 +113,11 @@
 		    		index = 0;
 		    	}
 				move();
-				interval = setInterval(auto, settings.autoTime);
+				if(settings.auto){
+					interval = setInterval(auto, settings.autoTime);
+				} else{
+					auto();
+				}
 		    }
 		    function prev(){
 		    	clearInterval(interval);
@@ -101,15 +125,28 @@
 		    	if(index < 0){
 		    		index =0;
 		    	}
-		    	interval = setInterval(auto,  settings.autoTime);
-		    	move();
+				if(settings.auto){
+					interval = setInterval(auto, settings.autoTime);
+				} else{
+					auto();
+				}
 		    }
 		    function auto(){
 				if(settings.auto){
-			    	index++;
-			    	if(index > ALen - displaySlideNum){
-			    		index = 0;
+		    		if(settings.controlsPoint && !settings.controlsBtn){
+				    	index += displaySlideNum;
+				    	if(index >= ALen){
+				    		index = 0;
+				    	}
+			    	} else{
+			    		index++;
+				    	if(index > ALen - displaySlideNum){
+				    		index = 0;
+				    	}
 			    	}
+			    	
+				$(_this).find('.point').removeClass('active');
+				$(_this).find('.point').eq(parseInt(index/displaySlideNum)).addClass('active');
 			    	move();
 				}
 		    }
@@ -121,4 +158,7 @@
 	    }
 	    
 	}
+	
+	//banner轮播
+	
 })(jQuery);
