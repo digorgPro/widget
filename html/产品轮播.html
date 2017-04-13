@@ -1,8 +1,8 @@
 <html>
 	<head>
 		<title></title>
-		<script type="text/javascript" src="js/jquery-3.2.0.js" ></script>
-		<script type="text/javascript" src="js/shao-widget.js" ></script>
+		<script type="text/javascript" src="../js/jquery-3.2.0.js" ></script>
+		<script type="text/javascript" src="../js/shao-widget.js" ></script>
 		<style type="text/css">
 			.clearfix::after {
 			  display: block;
@@ -34,12 +34,12 @@
 				width: 100%;
 				overflow: hidden;
 			}
-			.slider{
+			.shao-slider{
 				position: relative;
 				width: 100%;
 				padding: 10px 0;
 			}
-			.slider .arr{
+			.shao-slider .arr{
 				position: absolute;
 				display: block;
 				top: 50%;
@@ -48,19 +48,19 @@
 				height: 78px;
 				cursor: pointer;
 			}
-			.slider .arr-l{
+			.shao-slider .arr-l{
 				left: 5px;
-				background: url(images/arr-l.png) no-repeat center center;
+				background: url(../images/arr-l.png) no-repeat center center;
 			}
-			.slider .arr-r{
+			.shao-slider .arr-r{
 				right: 5px;
-				background: url(images/arr-r.png) no-repeat center center;
+				background: url(../images/arr-r.png) no-repeat center center;
 			}
-			.slider .point-box{
+			.shao-slider .point-box{
 				text-align: center;
 				margin: 0 auto;
 			}
-			.slider .point-box .point{
+			.shao-slider .point-box .point{
 				display: inline-block;
 				width: 12px;
 				height: 12px;
@@ -69,7 +69,7 @@
 				margin: 0 3px;
 				cursor: pointer;
 			}
-			.slider .point-box .point.active{
+			.shao-slider .point-box .point.active{
 				background: deepskyblue;
 			}
 			
@@ -92,52 +92,52 @@
 	</head>
 	<body>
 		<div class="container">
-			<div class="slider">
+			<div class="shao-slider">
 				<div class="inner-box">
 					<ul class="clearfix">
 						<li>
 							<a href="">
-								<img src="images/slider.jpg"/>
+								<img src="../images/slider.jpg"/>
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="images/slider.jpg"/>
+								<img src="../images/slider.jpg"/>
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="images/slider.jpg"/>
+								<img src="../images/slider.jpg"/>
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="images/slider.jpg"/>
+								<img src="../images/slider.jpg"/>
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="images/slider.jpg"/>
+								<img src="../images/slider.jpg"/>
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="images/slider.jpg"/>
+								<img src="../images/slider.jpg"/>
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="images/slider.jpg"/>
+								<img src="../images/slider.jpg"/>
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="images/slider.jpg"/>
+								<img src="../images/slider.jpg"/>
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="images/slider.jpg"/>
+								<img src="../images/slider.jpg"/>
 							</a>
 						</li>
 					</ul>
@@ -147,7 +147,7 @@
 		
 		<script type="text/javascript">
 			$(function(){
-				$('.slider').shaoSlider({
+				$('.shao-slider').shaoSlider({
 					displaySlideNum: 4
 				});
 			})
