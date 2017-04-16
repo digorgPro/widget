@@ -247,7 +247,140 @@
 
 	}
 	
+	//单个相对鼠标移动特效
+	$.fn.shaoMouseMove = function(options){
+		var settings = $.extend({
+			multiple : 0.1, //位移幅度
+			time : 20 //触发移动时间
+		}, options);
+		var _this = this,
+			mouse = {
+				X : 0,
+				Y : 0,
+				CX : 0,
+				CY : 0
+			},
+			block = {
+				X : mouse.X,
+				Y : mouse.Y,
+				CX : mouse.CX,
+				CY : mouse.CY
+			},
+			flag = true,
+			interval;
+		$(_this).on({
+			mousemove: function(e){
+				mouse.X = (e.pageX - $(_this).offset().left) - $(_this).width() / 2;
+				mouse.Y = (e.pageY - $(_this).offset().top) - $(_this).height() / 2;
+				flag = false;
+			},
+			mouseleave: function(e){
+				mouse.X = mouse.CX;
+				mouse.Y = mouse.CY;
+				flag = true;
+			}
+		});
+		interval = setInterval(calc, settings.time);	
+		function calc(){
+			if(flag){
+				$(_this).css({
+	  			  	transform : 'translate(0px, 0px)'
+				});
+				return;
+			}
+			block.CX += (mouse.X - block.CX) / 12;
+			block.CY += (mouse.Y - block.CY) / 12;
+			$(_this).css({
+  			  	transform : 'translate(' + (block.CX * settings.multiple) + 'px, '
+  			  	 + (block.CY * settings.multiple) + 'px)',
+				'-ms-transform' : 'translate(' + (block.CX * settings.multiple) + 'px, '
+  			  	 + (block.CY * settings.multiple) + 'px)',
+				'-moz-transform' : 'translate(' + (block.CX * settings.multiple) + 'px, '
+  			  	 + (block.CY * settings.multiple) + 'px)',
+				'-webkit-transform' : 'translate(' + (block.CX * settings.multiple) + 'px, '
+  			  	 + (block.CY * settings.multiple) + 'px)',
+				'-o-transform' : 'translate(' + (block.CX * settings.multiple) + 'px, '
+  			  	 + (block.CY * settings.multiple) + 'px)'
+			});
+		}
+	}
 	
+	//多个相对鼠标移动特效
+	$.fn.shaoMouseMoveMore = function(options){
+		var settings = $.extend({
+			multiple : 0.1, //位移幅度
+			time : 20 //触发移动时间
+		}, options);
+		var _this = this,
+			$item = $(_this).find('.item'),
+			flag = true,
+			mouseArr = [],
+			blockArr = [],
+			interval;
+		$item.each(function(){
+			var mouse = {
+					X : 0,
+					Y : 0,
+					CX : 0,
+					CY : 0
+				},
+				block = {
+					X : mouse.X,
+					Y : mouse.Y,
+					CX : mouse.CX,
+					CY : mouse.CY
+				};
+			mouseArr.push(mouse);
+			blockArr.push(block);
+		});
+		$(_this).on({
+			mousemove: function(e){
+				$item.each(function(){
+					var index = $(this).index();
+					mouseArr[index].X = (e.pageX - $(this).offset().left) - $(this).width() / 2;
+					mouseArr[index].Y = (e.pageY - $(this).offset().top) - $(this).height() / 2;
+				});
+				flag = false;
+			},
+			mouseleave: function(e){
+				$item.each(function(){
+					var index = $(this).index();
+					mouseArr[index].X = mouseArr[index].CX;
+					mouseArr[index].Y = mouseArr[index].CY;
+				});
+				flag = true;
+			}
+		});
+		interval = setInterval(calc, settings.time);	
+		function calc(){
+			if(flag){
+				$item.each(function(){
+					var index = $(this).index();
+					$(this).css({
+		  			  	transform : 'translate(0px, 0px)'
+					});
+				});
+				return;
+			}
+			$item.each(function(){
+				var index = $(this).index();
+				blockArr[index].CX += (mouseArr[index].X - blockArr[index].CX) / 12;
+				blockArr[index].CY += (mouseArr[index].Y - blockArr[index].CY) / 12;
+				$(this).css({
+	  			  	transform : 'translate(' + (blockArr[index].CX * settings.multiple) + 'px, '
+	  			  	 + (blockArr[index].CY * settings.multiple) + 'px)',
+					'-ms-transform' : 'translate(' + (blockArr[index].CX * settings.multiple) + 'px, '
+	  			  	 + (blockArr[index].CY * settings.multiple) + 'px)',
+					'-moz-transform' : 'translate(' + (blockArr[index].CX * settings.multiple) + 'px, '
+	  			  	 + (blockArr[index].CY * settings.multiple) + 'px)',
+					'-webkit-transform' : 'translate(' + (blockArr[index].CX * settings.multiple) + 'px, '
+	  			  	 + (blockArr[index].CY * settings.multiple) + 'px)',
+					'-o-transform' : 'translate(' + (blockArr[index].CX * settings.multiple) + 'px, '
+	  			  	 + (blockArr[index].CY * settings.multiple) + 'px)'
+				});
+			});
+		}
+	}
 	//banner轮播
 	
 })(jQuery);
